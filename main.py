@@ -198,7 +198,8 @@ async def delall(interaction: discord.Interaction, input:str):
         await interaction.response.send_message('This was not the right keyword. Please enter "all" to delete all codes.')
 
 # Zeigt alle codes an die gerade valide sind
-@bot.event
+@bot.tree.command(name='code')
+@commands.has_permissions(administrator=True)
 async def on_message (message): 
     sc = open('Codes.txt' , 'r') 
     scContent = sc.read()  
@@ -207,8 +208,7 @@ async def on_message (message):
             # read from file and print output      
             await message.reply(f'**{message.author}** hier sind alle Codes: `\n{scContent}`')
             sc.close()
-    #else: 
-    #    await message.reply(f'{message.author} STOP. Dazu hast du keine Berechtigung')
+
 
 
 

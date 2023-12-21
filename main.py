@@ -6,7 +6,7 @@ from colorama import Fore
 from datetime import datetime 
 from dotenv import load_dotenv
 import os
-
+import time
 
 load_dotenv()
 token = str(os.getenv("TOKEN"))
@@ -16,6 +16,17 @@ bot = commands.Bot(command_prefix='!' , intents= discord.Intents.all())
 
 # Logging Handler to log info 
 handler = logging.FileHandler(filename='discordPY.log', encoding='utf-8', mode  = 'w')
+
+
+while True: 
+    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    break
+        
+
+
+# Globale variablen für z.B. die Codes Data Liste 
+# Oder Sachen die immer wieder vorkommen z.B. now
+DATA = []
 
 
 @bot.event    
@@ -30,11 +41,6 @@ async def on_ready():
     print('------------------------------')    
     
     
-# Globale variablen für z.B. die Codes Data Liste 
-# Oder Sachen die immer wieder vorkommen z.B. dt_string
-DATA = []
-now = datetime.now()
-dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
 
 # Geht nicht wieso ? 
@@ -105,10 +111,10 @@ async def eingabe(interaction: discord.Interaction, input: str):
         await user.add_roles(role_Onlyfans)
 
         print(f'Added role {role_Onlyfans} to {user}')
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        print(f'{user} hat einen Code eingelöst: {input} :: {dt_string}\n')
-        CodeLogs.writelines(f'{user} ({user.id}) hat einen Code eingelöst: {role_Onlyfans} :: {input} :: {dt_string}\n')
-        RoleLogs.writelines(f'Added role {role_Onlyfans} to {user} ({user.id}) :: {dt_string}\n')
+
+        print(f'{user} hat einen Code eingelöst: {input} :: {now}\n')
+        CodeLogs.writelines(f'{user} ({user.id}) hat einen Code eingelöst: {role_Onlyfans} :: {input} :: {now}\n')
+        RoleLogs.writelines(f'Added role {role_Onlyfans} to {user} ({user.id}) :: {now}\n')
         RoleLogs.close()
         sc.close()        
     else:
@@ -138,10 +144,10 @@ async def eingabe(interaction: discord.Interaction, input: str):
         await interaction.response.send_message(f'**{interaction.user.name}** du hast den richtigen Code eingegeben. Hier ist deine Rolle.')
             
         print(f'Added role {role_bestfans} to {user}')
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        print(f'{user} hat einen Code eingelöst: {input} :: {dt_string}\n')
-        CodeLogs.writelines(f'{user} ({user.id}) hat einen Code eingelöst: {role_bestfans} :: {input} :: {dt_string}\n')
-        RoleLogs.writelines(f'Added role {role_bestfans} to {user} ({user.id}) :: {dt_string}\n')
+        
+        print(f'{user} hat einen Code eingelöst: {input} :: {now}\n')
+        CodeLogs.writelines(f'{user} ({user.id}) hat einen Code eingelöst: {role_bestfans} :: {input} :: {now}\n')
+        RoleLogs.writelines(f'Added role {role_bestfans} to {user} ({user.id}) :: {now}\n')
         RoleLogs.close()
         sc.close()
     else:
@@ -188,10 +194,12 @@ async def delete_code(interaction: discord.Interaction, input_one: str):
 @commands.has_permissions(administrator=True)
 @app_commands.describe(input = '"all" to delete all codes')
 async def delall(interaction: discord.Interaction, input:str): 
+    
     if input == 'all':
         sc = open('Codes.txt' , 'w')
         await interaction.response.send_message(f'**{interaction.user.name}** hat alle gültigen codes gelöscht')
-        print(Fore.RED + f'{interaction.user.name} hat alle codes gelöscht :: {dt_string}')
+                
+        print(Fore.RED + f'{interaction.user.name} hat alle codes gelöscht :: {now}')
         sc.close()
 
     else: 

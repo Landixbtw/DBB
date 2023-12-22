@@ -125,7 +125,7 @@ async def eingabe(interaction: discord.Interaction, input: str):
         print(f'Added role {role_Onlyfans} to {user}')
 
         while True: 
-            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            now = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
             break
 
         print(f'{user} hat einen Code eingelöst: {input} :: {now}\n')
@@ -168,7 +168,7 @@ async def eingabe(interaction: discord.Interaction, input: str):
         print(f'Added role {role_Bestfans} to {user}')
 
         while True: 
-            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            now = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
             break
 
         print(f'{user} hat einen Code eingelöst: {input} :: {now}\n')
@@ -228,7 +228,7 @@ async def delall(interaction: discord.Interaction ):
         await interaction.response.send_message(f'**{interaction.user.name}** hat alle gültigen codes gelöscht')
 
         while True: 
-            now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            now = datetime.now().strftime("%H:%M:%S %d/%m/%Y")
             print(Fore.RED + f'{interaction.user.name} hat alle codes gelöscht :: {now}')
             sc.close()
             break

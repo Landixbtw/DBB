@@ -229,11 +229,9 @@ async def delall(interaction: discord.Interaction ):
 
         while True: 
             now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            print(Fore.RED + f'{interaction.user.name} hat alle codes gelöscht :: {now}')
+            sc.close()
             break
-
-        print(Fore.RED + f'{interaction.user.name} hat alle codes gelöscht :: {now}')
-        sc.close()
-
 
 
 # Zeigt alle codes an die gerade valide sind

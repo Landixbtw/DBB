@@ -17,25 +17,20 @@
 # bot.run(token)
 
 
-
-
-
-
 # def liste_zu_datei(dateiname:str, liste:list) -> None:
 #     """
 #     Schreibt eine Liste in eine Datei.
 #     """
 #     with open(dateiname, "w") as f:
 #         f.writelines(liste)
-        
+
 # def datei_zu_liste(dateiname:str) -> list:
 #     """
 #     Liest eine Datei ein und gibt eine Liste mit den Zeilen zurück.
 #     """
 #     with open(dateiname, "r") as f:
 #         return f.readlines()
-    
-    
+
 
 from datetime import datetime
 

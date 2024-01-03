@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 import os
 import mariadb
 import sys
+from colorama import Fore
+from helpcommand import MyHelp
+
 
 load_dotenv()
 token = str(os.getenv("TOKEN"))
@@ -26,11 +29,11 @@ handler = logging.FileHandler(
 
 try:
     con = mariadb.connect(
-        user="xxx",
-        password="xxx",
+        user="ole",
+        password="QrsoL82",
         host="192.168.10.183",
         port=3306,
-        database="xxx",
+        database="BunnyDB",
     )
 
     # Get Cursor
@@ -73,7 +76,8 @@ async def on_ready():
         print(e)
     print("Everything online and working!")
     print("------------------------------")
-
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name =f"{bot.command_prefix}help"))
+    
 
 @bot.tree.command(name="sync")
 @app_commands.default_permissions(administrator=True)
@@ -254,13 +258,21 @@ async def eingabe(interaction: discord.Interaction, input: str):
 )
 @app_commands.describe(input="Wie lautet der Code ?")
 async def eingabe(interaction: discord.Interaction, input: str):
-    sc = open("src/dotxml/Codes.xml", "r")
-    scContent = sc.read()
     user = interaction.user
-    CodeLogs = open("src/dotxml/CodeRedeemLogs.xml", "a")
-    RoleLogs = open("src/dotxml/RoleReceiveLogs.xml", "a")
+    
+    cur.execute("SELECT CODES from Codes")
+    content = cur.fetchall()
+    cur.execute("SELECT USE_CASE FROM Codes")
+    use_case = cur.fetchall()
 
-    if input in scContent:
+    sanitized_content = [str(x[0]) for x in content]
+    sanitized_use_case = [str(x[0]) for x in use_case]
+    print(sanitized_content)
+    print(sanitized_use_case)
+
+    
+    
+    if input in sanitized_content and sanitized_use_case:
         guild = interaction.guild
         role_Bestfans = discord.utils.get(guild.roles, name="Bestfans Sub")
         await user.add_roles(role_Bestfans)
@@ -269,6 +281,7 @@ async def eingabe(interaction: discord.Interaction, input: str):
             await interaction.response.send_message(
                 f"{interaction.user.name}, du hast diese Rolle schon", ephemeral=True
             )
+            
 
         await interaction.response.send_message(
             f"**{interaction.user.name}** Hier ist deine Rolle.", ephemeral=True
@@ -280,15 +293,9 @@ async def eingabe(interaction: discord.Interaction, input: str):
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             break
 
-        print(f"{user} hat einen Code eingelöst: {input} :: {now}\n")
-        CodeLogs.writelines(
-            f"{user} ({user.id}) hat einen Code eingelöst: {role_Bestfans} :: {input} :: {now}\n"
-        )
-        RoleLogs.writelines(
-            f"Added role {role_Bestfans} to {user} ({user.id}) :: {now}\n"
-        )
-        RoleLogs.close()
-        sc.close()
+        """
+        Sobald jemand einen Code einlöst wird der username, der Code und das Datum mit Uhrzeit H:M:S in die Datenbank gelogged
+        """
 
         CRL = []
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -298,17 +305,37 @@ async def eingabe(interaction: discord.Interaction, input: str):
         RRL.append("B")
         RRL.append(user.id)
         RRL.append(now)
-        print(RRL)
+        #print(RRL)
 
         cur.execute("INSERT INTO RoleReceiveLogs VALUES (?, ?, ?, ?)", RRL)
 
         CRL.append(user.name)
         CRL.append(input)
         CRL.append(now)
-        print(CRL)
+        #print(CRL)
 
         cur.execute("INSERT INTO CodeRedeemLogs VALUES (?, ?, ?)", CRL)
         con.commit()
+        
+        async def date_handler():
+            cur.execute("SELECT REDEEMED_AT FROM CodeRedeemLogs")
+            date = cur.fetchone()[0]
+            print(date)
+            
+            if role_Bestfans in user.roles and date == now: 
+            # wenn user rolle hat und date == now entspricht rolle weg.            
+                user.remove_roles(role_Bestfans)
+                DM = await bot.fetch_user(interaction.user.id)
+                print(f"DAS IST DIE USER ID" ,{DM})
+                await DM.send("1 Month is over, and your Bestfans or Onlyfans role has been taken away, if you want the role again and can prove that you have a **valid subscription** of either, open a Ticket on the 'I have a question' Ticket and send a screenshot of privatebunnys respective profile so that we can see you are subscribed. ")        
+        
+        await date_handler()
+        
+    else:
+        await interaction.response.send_message(
+            f"*{interaction.user.name}* du hast den falschen Code eingegeben"
+        )
+
 
         """
         Hier kann man die Codes die festegelegt wurden wieder löschen, der Bot greift auf beide .txt files zu um zu schauen ob es den Code gibt
@@ -395,5 +422,8 @@ async def codes(interaction: discord.Interaction):
     if not interaction.user.has_permissions.administrator:
         interaction.response.send_message("Stop being naughty")
 
+    
+
+bot.help_command = MyHelp()
 
 bot.run(token, log_handler=handler)

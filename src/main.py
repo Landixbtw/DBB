@@ -233,7 +233,7 @@ async def eingabe(interaction: discord.Interaction, input: str):
                 print(f"DAS IST DIE USER ID" ,{DM})
                 await DM.send("1 Month is over, and your Bestfans or Onlyfans role has been taken away, if you want the role again and can prove that you have a **valid subscription** of either, open a Ticket on the 'I have a question' Ticket and send a screenshot of privatebunnys respective profile so that we can see you are subscribed. ")        
         
-        date_handler()
+        await date_handler()
         
     else:
         await interaction.response.send_message(

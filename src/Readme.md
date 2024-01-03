@@ -32,3 +32,5 @@ Following Commands for Administrators:
 
 Commands like /make_x or delete, delall, c, sync are only visible to people with Administrator rights and the message the bot sends is also only visible to the person that send the message. 
 
+
+

@@ -8,7 +8,7 @@ bot = commands.Bot(command_prefix='&', intents=intents)
 class MyHelp(commands.HelpCommand):
     #&help
     async def send_bot_help(self, mapping):
-        await self.context.send('*These two commands are important for you*:\n1. /of_sub: enter the code you got from privatebunny to receive your role.\n2. /bf_sub: enter the code you got from privatebunny to receive your role.')
+        await self.context.send('*These two commands are important for you*:\n1. /of_sub: enter the code you got to receive your role.\n2. /bf_sub: enter the code you got to receive your role.')
         
     #&help<command>
     async def send_command_help(self, command):

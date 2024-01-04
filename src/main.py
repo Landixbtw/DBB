@@ -76,8 +76,12 @@ async def on_ready():
         print(e)
     print("Everything online and working!")
     print("------------------------------")
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name =f"{bot.command_prefix}help"))
-    
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.watching, name=f"{bot.command_prefix}help"
+        )
+    )
+
 
 @bot.tree.command(name="sync")
 @app_commands.default_permissions(administrator=True)
@@ -107,7 +111,7 @@ async def codeOF(
 
     DATA = []
     # Input von user (arg_of) wird in Liste DATA temporär gespeichert (bis bot neu gestartet wird).
-    
+
     DATA.append("O")
     DATA.append(arg_of)
 
@@ -166,9 +170,8 @@ async def codeBF(interaction: discord.Interaction, arg_bf: str):
 )
 @app_commands.describe(input="Wie lautet der Code ?")
 async def eingabe(interaction: discord.Interaction, input: str):
-
     user = interaction.user
-    
+
     cur.execute("SELECT CODES from Codes")
     content = cur.fetchall()
     cur.execute("SELECT USE_CASE FROM Codes")
@@ -179,8 +182,6 @@ async def eingabe(interaction: discord.Interaction, input: str):
     print(sanitized_content)
     print(sanitized_use_case)
 
-    
-    
     if input in sanitized_content and sanitized_use_case:
         guild = interaction.guild
         role_Onlyfans = discord.utils.get(guild.roles, name="OnlyFans Sub")
@@ -213,37 +214,38 @@ async def eingabe(interaction: discord.Interaction, input: str):
         RRL.append("O")
         RRL.append(user.id)
         RRL.append(now)
-        #print(RRL)
+        # print(RRL)
 
         cur.execute("INSERT INTO RoleReceiveLogs VALUES (?, ?, ?, ?)", RRL)
 
         CRL.append(user.name)
         CRL.append(input)
         CRL.append(now)
-        #print(CRL)
+        # print(CRL)
 
         cur.execute("INSERT INTO CodeRedeemLogs VALUES (?, ?, ?)", CRL)
         con.commit()
-        
+
         async def date_handler():
             cur.execute("SELECT REDEEMED_AT FROM CodeRedeemLogs")
             date = cur.fetchone()[0]
             print(date)
-            
-            if role_Onlyfans in user.roles and date == now: 
-            # wenn user rolle hat und date == now entspricht rolle weg.            
+
+            if role_Onlyfans in user.roles and date == now:
+                # wenn user rolle hat und date == now entspricht rolle weg.
                 user.remove_roles(role_Onlyfans)
                 DM = await bot.fetch_user(interaction.user.id)
-                print(f"DAS IST DIE USER ID" ,{DM})
-                await DM.send("1 Month is over, and your Bestfans or Onlyfans role has been taken away, if you want the role again and can prove that you have a **valid subscription** of either, open a Ticket on the 'I have a question' Ticket and send a screenshot of privatebunnys respective profile so that we can see you are subscribed. ")        
-        
+                print(f"DAS IST DIE USER ID", {DM})
+                await DM.send(
+                    "1 Month is over, and your Bestfans or Onlyfans role has been taken away, if you want the role again and can prove that you have a **valid subscription** of either, open a Ticket on the 'I have a question' Ticket and send a screenshot of privatebunnys respective profile so that we can see you are subscribed. "
+                )
+
         await date_handler()
-        
+
     else:
         await interaction.response.send_message(
             f"*{interaction.user.name}* du hast den falschen Code eingegeben"
         )
-
 
 
 """
@@ -259,7 +261,7 @@ async def eingabe(interaction: discord.Interaction, input: str):
 @app_commands.describe(input="Wie lautet der Code ?")
 async def eingabe(interaction: discord.Interaction, input: str):
     user = interaction.user
-    
+
     cur.execute("SELECT CODES from Codes")
     content = cur.fetchall()
     cur.execute("SELECT USE_CASE FROM Codes")
@@ -270,8 +272,6 @@ async def eingabe(interaction: discord.Interaction, input: str):
     print(sanitized_content)
     print(sanitized_use_case)
 
-    
-    
     if input in sanitized_content and sanitized_use_case:
         guild = interaction.guild
         role_Bestfans = discord.utils.get(guild.roles, name="Bestfans Sub")
@@ -281,7 +281,6 @@ async def eingabe(interaction: discord.Interaction, input: str):
             await interaction.response.send_message(
                 f"{interaction.user.name}, du hast diese Rolle schon", ephemeral=True
             )
-            
 
         await interaction.response.send_message(
             f"**{interaction.user.name}** Hier ist deine Rolle.", ephemeral=True
@@ -305,37 +304,38 @@ async def eingabe(interaction: discord.Interaction, input: str):
         RRL.append("B")
         RRL.append(user.id)
         RRL.append(now)
-        #print(RRL)
+        # print(RRL)
 
         cur.execute("INSERT INTO RoleReceiveLogs VALUES (?, ?, ?, ?)", RRL)
 
         CRL.append(user.name)
         CRL.append(input)
         CRL.append(now)
-        #print(CRL)
+        # print(CRL)
 
         cur.execute("INSERT INTO CodeRedeemLogs VALUES (?, ?, ?)", CRL)
         con.commit()
-        
+
         async def date_handler():
             cur.execute("SELECT REDEEMED_AT FROM CodeRedeemLogs")
             date = cur.fetchone()[0]
             print(date)
-            
-            if role_Bestfans in user.roles and date == now: 
-            # wenn user rolle hat und date == now entspricht rolle weg.            
+
+            if role_Bestfans in user.roles and date == now:
+                # wenn user rolle hat und date == now entspricht rolle weg.
                 user.remove_roles(role_Bestfans)
                 DM = await bot.fetch_user(interaction.user.id)
-                print(f"DAS IST DIE USER ID" ,{DM})
-                await DM.send("1 Month is over, and your Bestfans or Onlyfans role has been taken away, if you want the role again and can prove that you have a **valid subscription** of either, open a Ticket on the 'I have a question' Ticket and send a screenshot of privatebunnys respective profile so that we can see you are subscribed. ")        
-        
+                print(f"DAS IST DIE USER ID", {DM})
+                await DM.send(
+                    "1 Month is over, and your Bestfans or Onlyfans role has been taken away, if you want the role again and can prove that you have a **valid subscription** of either, open a Ticket on the 'I have a question' Ticket and send a screenshot of privatebunnys respective profile so that we can see you are subscribed. "
+                )
+
         await date_handler()
-        
+
     else:
         await interaction.response.send_message(
             f"*{interaction.user.name}* du hast den falschen Code eingegeben"
         )
-
 
         """
         Hier kann man die Codes die festegelegt wurden wieder löschen, der Bot greift auf beide .txt files zu um zu schauen ob es den Code gibt
@@ -347,19 +347,15 @@ async def eingabe(interaction: discord.Interaction, input: str):
 @app_commands.default_permissions(administrator=True)
 @app_commands.describe(input="Delete a code")
 async def delete_code(interaction: discord.Interaction, input: str):
-
     cur.execute("SELECT CODES FROM Codes")
     all_codes = cur.fetchall()
 
     sanitized_list = [str(x[0]) for x in all_codes]
 
-
     if input in sanitized_list:
-
         cur.execute("DELETE FROM Codes WHERE CODES = ?", (input,))
         con.commit()
 
-        
         updated_list = [x for x in sanitized_list if x != input]
 
         await interaction.response.send_message(
@@ -383,34 +379,26 @@ async def delete_code(interaction: discord.Interaction, input: str):
 @bot.tree.command(name="delall")
 @app_commands.default_permissions(administrator=True)
 async def delall(interaction: discord.Interaction):
-    
     cur.execute("SELECT CODES FROM Codes")
     all_codes = cur.fetchall()
-
 
     cur.execute("DELETE FROM Codes", (all_codes))
     con.commit()
 
-        
-
     await interaction.response.send_message(
-            f"**{interaction.user.name}** alle Codes wurden gelöscht.",
-            ephemeral=True,
-        )
+        f"**{interaction.user.name}** alle Codes wurden gelöscht.",
+    )
     print(f"ALLE CODES WURDEN GELÖSCHT")
-    
-
 
 
 # Zeigt alle codes an die gerade valide sind
 
+
 @bot.tree.command(name="c")
 @app_commands.default_permissions(administrator=True)
 async def codes(interaction: discord.Interaction):
-    
     cur.execute("SELECT CODES FROM Codes")
     all_codes = cur.fetchall()
-
 
     print(f"{interaction.user} hier sind alle Codes: \n{all_codes}")
 
@@ -418,11 +406,9 @@ async def codes(interaction: discord.Interaction):
         f"**{interaction.user}** hier sind alle Codes: `\n{all_codes}`", ephemeral=True
     )
 
-
     if not interaction.user.has_permissions.administrator:
         interaction.response.send_message("Stop being naughty")
 
-    
 
 bot.help_command = MyHelp()
 

@@ -1,2 +1,46 @@
-[2024-01-03 19:19:22] [INFO    ] discord.client: logging in using static token
-[2024-01-03 19:19:23] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 554f1f17c48c6e3c15e896188d74ee2f).
+[2024-01-05 21:29:35] [INFO    ] discord.client: logging in using static token
+[2024-01-05 21:29:36] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: e7d3515749989a44cfec233fa3b7427c).
+[2024-01-05 21:30:30] [ERROR   ] discord.app_commands.tree: Ignoring exception in command 'bf_sub'
+Traceback (most recent call last):
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aole/Dokumente/VscProjekte/DiscordBot/DBB/src/cogs/bf_sub.py", line 61, in eingabe
+    await interaction.response.send_message(
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/interactions.py", line 774, in send_message
+    raise InteractionResponded(self._parent)
+discord.errors.InteractionResponded: This interaction has already been responded to before
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'bf_sub' raised an exception: InteractionResponded: This interaction has already been responded to before
+[2024-01-05 21:30:38] [ERROR   ] discord.app_commands.tree: Ignoring exception in command 'of_sub'
+Traceback (most recent call last):
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/commands.py", line 827, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aole/Dokumente/VscProjekte/DiscordBot/DBB/src/cogs/of_sub.py", line 63, in eingabe
+    await interaction.response.send_message(
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/interactions.py", line 774, in send_message
+    raise InteractionResponded(self._parent)
+discord.errors.InteractionResponded: This interaction has already been responded to before
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/tree.py", line 1248, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/commands.py", line 853, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aole/.local/lib/python3.11/site-packages/discord/app_commands/commands.py", line 846, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'of_sub' raised an exception: InteractionResponded: This interaction has already been responded to before

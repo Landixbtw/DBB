@@ -2,7 +2,8 @@ A Bot I wrote to learn python and get into Programming.
 You are able to make "codes" for people to claim the respective roles. 
 Right now Onlyfans and Bestfans platforms are featured. 
 
-!!! Do Not take this project to serious !!!
+<h1>!!! Do Not take this project to serious !!!</h1> 
+
 I just made it for fun/ for a friend who runs a Discord server and who benefited from this. 
 
 As far as I am concerned I will develope this bot and improve upon it mostly behind the scenes with all time availability. Also maybe a command to change the language just for fun. And a feature that will take the role from the user after 1 Month

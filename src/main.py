@@ -83,18 +83,6 @@ async def reload_hook(self):
                         
 
 
-try:
-    con = mariadb.connect(
-        user="ole",
-        password="QrsoL82",
-        host="192.168.10.101",
-        port=3306,
-        database="BunnyDB",
-    )
-    
-except mariadb.Error as mariaErr:
-    print(f"Error connecting to MariaDB Platform: {mariaErr}")
-    sys.exit(1)
 
 
 

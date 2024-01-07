@@ -8,7 +8,7 @@ try:
     con = mariadb.connect(
         user="ole",
         password="QrsoL82",
-        host="192.168.10.183",
+        host="192.168.10.101",
         port=3306,
         database="BunnyDB",
     )
@@ -32,12 +32,15 @@ class c(commands.Cog):
     @app_commands.default_permissions(administrator=True)
     async def codes(self, interaction: discord.Interaction):
         
+        
         cur.execute("SELECT CODES FROM Codes")
         all_codes = cur.fetchall()
-        print(f"{interaction.user} hier sind alle Codes: \n{all_codes}")
+        sanitized_all_codes = [str(x[0]) for x in all_codes]
+        
+        print(f"{interaction.user} hier sind alle Codes: \n{sanitized_all_codes}")
 
         await interaction.response.send_message(
-            f"**{interaction.user}** hier sind alle Codes: `\n{all_codes}`",
+            f"**{interaction.user}** hier sind alle Codes: `\n{sanitized_all_codes}`",
             ephemeral=True,
         )
 
@@ -47,4 +50,4 @@ class c(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(c(bot))
-    print("c cog geladen")
+    print("c cog geladen ✔️")

@@ -9,7 +9,7 @@ try:
     con = mariadb.connect(
         user="ole",
         password="QrsoL82",
-        host="192.168.10.183",
+        host="192.168.10.101",
         port=3306,
         database="BunnyDB",
     )
@@ -118,4 +118,4 @@ class of_sub(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(of_sub(bot))
-    print("of_sub cog geladen")
+    print("of_sub cog geladen ✔️")

@@ -8,11 +8,8 @@ import mariadb
 import sys
 from colorama import Fore
 from helpcommand import MyHelp
-from icecream import ic
 from typing import Literal
 
-
-ic.configureOutput(prefix="Debug: ", includeContext=True)
 
 load_dotenv()
 token = str(os.getenv("TOKEN"))
@@ -43,7 +40,19 @@ class bot(commands.Bot):
             "of_sub",
             
         ]
+    
+    async def setup_hook(self): 
+        print('loading cogs ...') 
         
+        for file in os.listdir("./src/cogs"): # lists all the cog files inside the cog folder. (for raspberry /home/username/DBB/src/cogs)
+            
+            if file.endswith(".py"): # It gets all the cogs that ends with a ".py".
+                try:
+                    name = file[:-3] # It gets the name of the file removing the ".py"
+                    await bot.load_extension(f"cogs.{name}") # This loads the cog.
+                except Exception as e:
+                    print(f'error: {e}') 
+                    
     async def on_ready(self):
         print(f"{bot.user.name} is ready to rumble!")
         print("Published by Moritz Reiswaffel")
@@ -52,26 +61,17 @@ class bot(commands.Bot):
             print(f"Synced {len(synced)} commands!")
         except Exception as e:
             print(e)
-        print(f'{discord.__version__}')
+        #print(f'{discord.__version__}')
         print("------------------------------")
         await bot.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.watching, name=f"{bot.command_prefix}help"
             )
         )
-        
-    async def setup_hook(self): 
-        print('loading cogs')
-        for file in os.listdir("./src/cogs"): # lists all the cog files inside the cog folder.
-            if file.endswith(".py"): # It gets all the cogs that ends with a ".py".
-                try:
-                    name = file[:-3] # It gets the name of the file removing the ".py"
-                    await bot.load_extension(f"cogs.{name}") # This loads the cog.
-                except Exception as e:
-                    print(f'error: {e}') 
-                    
 
-    async def reload_hook(self):
+
+                    
+async def reload_hook(self):
         print('reloading cogs')
         for file in os.listdir("./src/cogs"):
             if file.endswith('.py'):
@@ -80,14 +80,14 @@ class bot(commands.Bot):
                     await bot.reload_extension(f'cogs.{name}')
                 except Exception as reErr:
                     print(f'Reload error: {reErr}')
-                    
+                        
 
 
 try:
     con = mariadb.connect(
         user="ole",
         password="QrsoL82",
-        host="192.168.10.183",
+        host="192.168.10.101",
         port=3306,
         database="BunnyDB",
     )
@@ -123,7 +123,7 @@ async def reload(interaction: discord.Interaction, cog:Literal["Cog1", "Cog2"]):
     except Exception as e:
         await interaction.response.send_message(f"Failed! Could not reload this cog class. See error below\n```{e}```")
     
-    
+
 bot = bot()
 bot.help_command = MyHelp()
 bot.run(token, log_handler=handler, reconnect=True) 

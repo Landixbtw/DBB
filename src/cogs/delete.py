@@ -8,7 +8,7 @@ try:
     con = mariadb.connect(
         user="ole",
         password="QrsoL82",
-        host="192.168.10.183",
+        host="192.168.10.101",
         port=3306,
         database="BunnyDB",
     )
@@ -60,5 +60,5 @@ class delete(commands.Cog):
         
 async def setup(bot):
     await bot.add_cog(delete(bot))
-    print('delete cog geladen')
+    print('delete cog geladen ✔️')
     

@@ -63,20 +63,7 @@ class bot(commands.Bot):
             print(f"Synced {len(synced)} commands!")
         except Exception as e:
             print(e)
-        #print(f'{discord.__version__}')
-        
-        async def role_check():
-            for guild in bot.guilds:
-                Onlyfans_Sub = discord.utils.get(guild.roles, name="Onlyfans Sub")
-                Bestfans_Sub= discord.utils.get(guild.roles, name="Bestfans Sub")
-            
-                if not all((Onlyfans_Sub, Bestfans_Sub)):
-                    await guild.create_role(name="Onlyfans Sub", color=0x00AFF0)
-                    await guild.create_role(name="Bestfans Sub", color=0xf94a25)
-
-
-        await role_check()
-        print('role check finished')
+        print(f'{discord.__version__}')
         print("------------------------------")
         await bot.change_presence(
             activity=discord.Activity(
@@ -104,6 +91,15 @@ class bot(commands.Bot):
 
         allowed_guilds.add(guild.id)
         
+        
+        for guild in bot.guilds:
+            Onlyfans_Sub = discord.utils.get(guild.roles, name="Onlyfans Sub")
+            Bestfans_Sub= discord.utils.get(guild.roles, name="Bestfans Sub")
+        
+            if not all((Onlyfans_Sub, Bestfans_Sub)):
+                await guild.create_role(name="Onlyfans Sub", color=0x00AFF0)
+                await guild.create_role(name="Bestfans Sub", color=0xf94a25)
+                
     async def on_guild_remove(self, guild):
         # This function is called when the bot is removed from a guild
 
@@ -114,7 +110,14 @@ class bot(commands.Bot):
         cur.execute(f"DROP TABLE IF EXISTS {table_prefix}_RoleReceiveLogs")
 
         con.commit()
-
+            
+        for guild in bot.guilds:
+            Onlyfans_Sub = discord.utils.get(guild.roles, name="Onlyfans Sub")
+            Bestfans_Sub= discord.utils.get(guild.roles, name="Bestfans Sub")
+        
+            if all((Onlyfans_Sub, Bestfans_Sub)):
+                await guild.delete_role(Onlyfans_Sub)
+                await guild.delete_role(Bestfans_Sub)
     
     async def reload_hook(self):
         print('reloading cogs')

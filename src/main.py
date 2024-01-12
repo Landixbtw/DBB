@@ -9,7 +9,7 @@ import sys
 from colorama import Fore
 from helpcommand import MyHelp
 from typing import Literal
-
+import asyncio
 
 load_dotenv()
 token = str(os.getenv("TOKEN"))
@@ -23,6 +23,8 @@ if not os.path.exists(logs_dir):
 handler = logging.FileHandler(
     filename="./src/Logs/discord.log", encoding="utf-8", mode="w"
 )
+
+allowed_guilds = set()  # A set to store the IDs of allowed guilds
 
 class bot(commands.Bot):
     def __init__(self, ):
@@ -62,16 +64,58 @@ class bot(commands.Bot):
         except Exception as e:
             print(e)
         #print(f'{discord.__version__}')
+        async def role_check():
+            for guild in bot.guilds:
+                Onlyfans_Sub = discord.utils.get(guild.roles, name="1. WARN")
+                Bestfans_Sub= discord.utils.get(guild.roles, name="2. WARN")
+            
+                if not all((Onlyfans_Sub, Bestfans_Sub)):
+                    await guild.create_role(name="Onlyfans Sub", color=0x00AFF0)
+                    await guild.create_role(name="Bestfans Sub", color=0xf94a25)
+
+
+        await role_check()
+        print('role check finished')
         print("------------------------------")
         await bot.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.watching, name=f"{bot.command_prefix}help"
             )
+        )        
+
+    
+    async def on_guild_join(self, guild):
+        # This function is called when the bot joins a new guild
+
+        table_prefix = f"guild_{guild.id}"
+
+        cur.execute(
+            f"CREATE TABLE IF NOT EXISTS {table_prefix}_Codes (USE_CASE TEXT, CODES TEXT, GUELTIG_BIS DATETIME)"
+        )
+        cur.execute(
+            f"CREATE TABLE IF NOT EXISTS {table_prefix}_CodeRedeemLogs (USER TEXT, CODE TEXT, REDEEMED_AT DATETIME)"
+        )
+        cur.execute(
+            f"CREATE TABLE IF NOT EXISTS {table_prefix}_RoleReceiveLogs (USER TEXT, ROLE TEXT, USER_ID BIGINT, RECEIVED_AT DATETIME)"
         )
 
+        con.commit()
 
-                    
-async def reload_hook(self):
+        allowed_guilds.add(guild.id)
+        
+    async def on_guild_remove(self, guild):
+        # This function is called when the bot is removed from a guild
+
+        table_prefix = f"guild_{guild.id}"
+
+        cur.execute(f"DROP TABLE IF EXISTS {table_prefix}_Codes")
+        cur.execute(f"DROP TABLE IF EXISTS {table_prefix}_CodeRedeemLogs")
+        cur.execute(f"DROP TABLE IF EXISTS {table_prefix}_RoleReceiveLogs")
+
+        con.commit()
+
+    
+    async def reload_hook(self):
         print('reloading cogs')
         for file in os.listdir("./src/cogs"):
             if file.endswith('.py'):
@@ -83,24 +127,55 @@ async def reload_hook(self):
                         
 
 
+try:
+    con = mariadb.connect(
+        user="ole",
+        password="QrsoL82",
+        host="192.168.10.101",
+        port=3306,
+        database="BunnyDB",
+    )
+    
+except mariadb.Error as mariaErr:
+    print(f"Error connecting to MariaDB Platform: {mariaErr}")
+    sys.exit(1)
+
+cur = con.cursor()
+
 
 
 
 # # con.autocommit = False
 
-cur = con.cursor()
+# # Function to create a table for each guild dynamically
+async def create_guild_tables(bot):
+    for guild in bot.guilds:
+        table_name = f"Codes_{guild.id}"  # Use guild ID in the table name
 
-cur.execute(
-    "CREATE TABLE IF NOT EXISTS Codes(USE_CASE TEXT, CODES TEXT , GUELTIG_BIS DATETIME)"
-)
-cur.execute(
-    "CREATE TABLE IF NOT EXISTS CodeRedeemLogs(USER TEXT, CODE TEXT, REDEEMED_AT DATETIME)"
-)
-cur.execute(
-    "CREATE TABLE IF NOT EXISTS RoleReceiveLogs(USER TEXT, ROLE TEXT, USER_ID BIGINT , RECEIVED_AT DATETIME)"
-)
+        cur.execute(
+            f"CREATE TABLE IF NOT EXISTS {table_name} (USE_CASE TEXT, CODES TEXT, GUELTIG_BIS DATETIME)"
+        )
+        cur.execute(
+            f"CREATE TABLE IF NOT EXISTS CodeRedeemLogs_{guild.id} (USER TEXT, CODE TEXT, REDEEMED_AT DATETIME)"
+        )
+        cur.execute(
+            f"CREATE TABLE IF NOT EXISTS RoleReceiveLogs_{guild.id} (USER TEXT, ROLE TEXT, USER_ID BIGINT, RECEIVED_AT DATETIME)"
+        )
 
-con.commit()
+    # Create a default table for the main guild
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS default_Codes (USE_CASE TEXT, CODES TEXT, GUELTIG_BIS DATETIME)"
+    )
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS default_CodeRedeemLogs (USER TEXT, CODE TEXT, REDEEMED_AT DATETIME)"
+    )
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS default_RoleReceiveLogs (USER TEXT, ROLE TEXT, USER_ID BIGINT, RECEIVED_AT DATETIME)"
+    )
+
+    con.commit()
+
+
 
 
 @app_commands.command(name="reload", description="Reloads a Cog Class")
@@ -113,5 +188,8 @@ async def reload(interaction: discord.Interaction, cog:Literal["Cog1", "Cog2"]):
     
 
 bot = bot()
+
+# You need to call the function to create guild-specific tables
+asyncio.run(create_guild_tables(bot))
 bot.help_command = MyHelp()
 bot.run(token, log_handler=handler, reconnect=True) 

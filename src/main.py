@@ -64,10 +64,11 @@ class bot(commands.Bot):
         except Exception as e:
             print(e)
         #print(f'{discord.__version__}')
+        
         async def role_check():
             for guild in bot.guilds:
-                Onlyfans_Sub = discord.utils.get(guild.roles, name="1. WARN")
-                Bestfans_Sub= discord.utils.get(guild.roles, name="2. WARN")
+                Onlyfans_Sub = discord.utils.get(guild.roles, name="Onlyfans Sub")
+                Bestfans_Sub= discord.utils.get(guild.roles, name="Bestfans Sub")
             
                 if not all((Onlyfans_Sub, Bestfans_Sub)):
                     await guild.create_role(name="Onlyfans Sub", color=0x00AFF0)

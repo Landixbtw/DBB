@@ -9,12 +9,13 @@ import sys
 from colorama import Fore
 from helpcommand import MyHelp
 from typing import Literal
+from dateutil.relativedelta import relativedelta
 
 load_dotenv()
 token = str(os.getenv("TOKEN"))
 
 
-logs_dir = "./src/Logs"
+logs_dir = "/DBB/src/Logs"
 if not os.path.exists(logs_dir):
     print("Made Logs Folder and file!")
     os.makedirs(logs_dir)
@@ -93,8 +94,11 @@ class bot(commands.Bot):
         for guild in bot.guilds:
             Onlyfans_Sub = discord.utils.get(guild.roles, name="Onlyfans Sub")
             Bestfans_Sub= discord.utils.get(guild.roles, name="Bestfans Sub")
-        
-            if not all((Onlyfans_Sub, Bestfans_Sub)):
+            Onlyfans_Subscriber = discord.utils.get(guild.roles, name="Onlyfans Subscriber")
+            Bestfans_Subscriber = discord.utils.get(guild.roles, name="Bestfans Subscriber")
+            
+            
+            if not all((Onlyfans_Sub, Bestfans_Sub, Onlyfans_Subscriber, Bestfans_Subscriber)):
                 await guild.create_role(name="Onlyfans Sub", color=0x00AFF0)
                 await guild.create_role(name="Bestfans Sub", color=0xf94a25)
                 

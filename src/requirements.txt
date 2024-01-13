@@ -1,0 +1,5 @@
+discord.py
+python-dotenv
+mariadb
+colorama
+python-dateutil

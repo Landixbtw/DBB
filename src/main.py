@@ -71,7 +71,6 @@ class bot(commands.Bot):
             )
         )        
 
-    
     async def on_guild_join(self, guild):
         # This function is called when the bot joins a new guild
 
@@ -146,42 +145,6 @@ except mariadb.Error as mariaErr:
 
 cur = con.cursor()
 
-
-
-
-# # con.autocommit = False
-
-# # Function to create a table for each guild dynamically
-async def create_guild_tables(bot):
-    for guild in bot.guilds:
-        table_name = f"Codes_{guild.id}"  # Use guild ID in the table name
-
-        cur.execute(
-            f"CREATE TABLE IF NOT EXISTS {table_name} (USE_CASE TEXT, CODES TEXT, GUELTIG_BIS DATETIME)"
-        )
-        cur.execute(
-            f"CREATE TABLE IF NOT EXISTS CodeRedeemLogs_{guild.id} (USER TEXT, CODE TEXT, REDEEMED_AT DATETIME)"
-        )
-        cur.execute(
-            f"CREATE TABLE IF NOT EXISTS RoleReceiveLogs_{guild.id} (USER TEXT, ROLE TEXT, USER_ID BIGINT, RECEIVED_AT DATETIME)"
-        )
-
-    # Create a default table for the main guild
-    cur.execute(
-        "CREATE TABLE IF NOT EXISTS default_Codes (USE_CASE TEXT, CODES TEXT, GUELTIG_BIS DATETIME)"
-    )
-    cur.execute(
-        "CREATE TABLE IF NOT EXISTS default_CodeRedeemLogs (USER TEXT, CODE TEXT, REDEEMED_AT DATETIME)"
-    )
-    cur.execute(
-        "CREATE TABLE IF NOT EXISTS default_RoleReceiveLogs (USER TEXT, ROLE TEXT, USER_ID BIGINT, RECEIVED_AT DATETIME)"
-    )
-
-    con.commit()
-
-
-
-
 @app_commands.command(name="reload", description="Reloads a Cog Class")
 async def reload(interaction: discord.Interaction, cog:Literal["Cog1", "Cog2"]):
     try:
@@ -193,7 +156,5 @@ async def reload(interaction: discord.Interaction, cog:Literal["Cog1", "Cog2"]):
 
 bot = bot()
 
-# You need to call the function to create guild-specific tables
-asyncio.run(create_guild_tables(bot))
 bot.help_command = MyHelp()
 bot.run(token, log_handler=handler, reconnect=True) 

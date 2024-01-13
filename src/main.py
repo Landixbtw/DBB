@@ -15,7 +15,7 @@ load_dotenv()
 token = str(os.getenv("TOKEN"))
 
 
-logs_dir = "/DBB/src/Logs"
+logs_dir = "./DBB/src/Logs"
 if not os.path.exists(logs_dir):
     print("Made Logs Folder and file!")
     os.makedirs(logs_dir)

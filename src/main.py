@@ -9,7 +9,6 @@ import sys
 from colorama import Fore
 from helpcommand import MyHelp
 from typing import Literal
-import asyncio
 
 load_dotenv()
 token = str(os.getenv("TOKEN"))

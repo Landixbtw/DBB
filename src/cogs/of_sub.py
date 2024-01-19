@@ -119,3 +119,6 @@ class of_sub(commands.Cog):
 async def setup(bot): 
     await bot.add_cog(of_sub(bot))
     print('of_sub cog geladen ✔️')
+    
+
+

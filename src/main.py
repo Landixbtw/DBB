@@ -15,14 +15,16 @@ load_dotenv()
 token = str(os.getenv("TOKEN"))
 
 
-logs_dir = "./Logs"
-if not os.path.exists(logs_dir):
-    print("Made Logs Folder and file!")
-    os.makedirs(logs_dir)
-# Logging Handler to log info
-handler = logging.FileHandler(
-    filename="./Logs/discord.log", encoding="utf-8", mode="w"
-)
+# logs_dir = "./Logs"
+# if not os.path.exists(logs_dir):
+#     print("Made Logs Folder and file!")
+#     os.makedirs(logs_dir)
+# # Logging Handler to log info
+# handler = logging.FileHandler(
+#     filename="./Logs/discord.log", encoding="utf-8", mode="w"
+# )
+
+
 allowed_guilds = set()  # A set to store the IDs of allowed guilds
 
 class bot(commands.Bot):
@@ -159,4 +161,4 @@ async def reload(interaction: discord.Interaction, cog:Literal["Cog1", "Cog2"]):
 bot = bot()
 
 bot.help_command = MyHelp()
-bot.run(token, log_handler=handler, reconnect=True) 
+bot.run(token,) 

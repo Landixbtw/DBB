@@ -15,15 +15,14 @@ load_dotenv()
 token = str(os.getenv("TOKEN"))
 
 
-logs_dir = "./DBB/src/Logs"
+logs_dir = "./Logs"
 if not os.path.exists(logs_dir):
     print("Made Logs Folder and file!")
     os.makedirs(logs_dir)
 # Logging Handler to log info
 handler = logging.FileHandler(
-    filename="./src/Logs/discord.log", encoding="utf-8", mode="w"
+    filename="./Logs/discord.log", encoding="utf-8", mode="w"
 )
-
 allowed_guilds = set()  # A set to store the IDs of allowed guilds
 
 class bot(commands.Bot):
@@ -46,7 +45,7 @@ class bot(commands.Bot):
     async def setup_hook(self): 
         print('loading cogs ...') 
         
-        for file in os.listdir("./src/cogs"): # lists all the cog files inside the cog folder. (for raspberry /home/username/DBB/src/cogs)
+        for file in os.listdir("./cogs"): # lists all the cog files inside the cog folder. (for raspberry /home/username/DBB/src/cogs)
             
             if file.endswith(".py"): # It gets all the cogs that ends with a ".py".
                 try:

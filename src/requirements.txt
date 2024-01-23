@@ -1,5 +1,5 @@
 discord.py==2.3.2
 python-dotenv==1.0.0
-mariadb==10.6
+mariadb==1.1.9
 colorama
 python-dateutil

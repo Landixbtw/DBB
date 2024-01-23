@@ -11,9 +11,6 @@ from helpcommand import MyHelp
 from typing import Literal
 from dateutil.relativedelta import relativedelta
 
-# Just a test for bash file
-print("hallo")
-
 load_dotenv()
 token = str(os.getenv("TOKEN"))
 

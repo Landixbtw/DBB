@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 load_dotenv()
 token = str(os.getenv("TOKEN"))
 
-
+print("test")
 # logs_dir = "./Logs"
 # if not os.path.exists(logs_dir):
 #     print("Made Logs Folder and file!")

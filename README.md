@@ -1,9 +1,8 @@
-<h1>!!! Do Not take this project to serious !!!</h1> 
+<h2>!!! Do Not take this project to serious !!!</h2> 
 
 This Bot I wrote to learn python and get into Programming. 
 You are able to make "codes" for people to claim the respective roles. 
 Two plattforms are features and propably none will follow. 
-
 
 I just made it for fun/ for a friend who runs a Discord server and who benefited from this. 
 

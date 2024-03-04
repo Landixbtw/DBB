@@ -98,8 +98,7 @@ class bot(commands.Bot):
             Onlyfans_Subscriber = discord.utils.get(guild.roles, name="Onlyfans Subscriber")
             Bestfans_Subscriber = discord.utils.get(guild.roles, name="Bestfans Subscriber")
             
-            
-            if not all((Onlyfans_Sub, Bestfans_Sub, Onlyfans_Subscriber, Bestfans_Subscriber)):
+            if not all((Onlyfans_Sub, Bestfan_Sub, Onlyfans_Subscriber, Bestfans_Subscriber)):
                 await guild.create_role(name="Onlyfans Sub", color=0x00AFF0)
                 await guild.create_role(name="Bestfans Sub", color=0xf94a25)
                 

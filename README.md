@@ -1,4 +1,3 @@
-<h2>!!! Do Not take this project to serious !!!</h2> 
 
 This Bot I wrote to learn python and get into Programming. 
 You are able to make "codes" for people to claim the respective roles. 
